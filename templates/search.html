@@ -1,0 +1,27 @@
+{% extends "default.html" %}
+
+{% block title %}Seach results{% endblock %}
+
+{% block content %}
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Autor</th>
+            <th>Isbn</th>
+            <th>Publication year</th>
+            <th>More information</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+            <td>{{result.title}}</td>
+            <td>{{result.autor}}</td>
+            <td>{{result.isbn}}</td>
+            <td>{{result.publication_year}}</td>
+            <td><a href="{{ url_for('book', book_isbn=result.isbn) }}">link</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+</table>
+
+{% endblock %}

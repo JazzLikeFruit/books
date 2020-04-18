@@ -1,0 +1,28 @@
+{% extends "default.html" %}
+{% block title %}homepage{% endblock %}
+
+{% block content %}
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Autor</th>
+            <th>Isbn</th>
+            <th>Publication year</th>
+            <th>More information</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books%}
+        <tr>
+            <td>{{book.title}}</td>
+            <td>{{book.autor}}</td>
+            <td>{{book.isbn}}</td>
+            <td>{{book.publication_year}}</td>
+            <td><a href="{{ url_for('book', book_isbn=book.isbn) }}">link</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
