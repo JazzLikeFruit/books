@@ -1,24 +1,14 @@
 import os
 
 from flask import Flask, session, render_template, request, flash, url_for, redirect
-from flask_session import Session
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from models import *
 
 app = Flask(__name__)
-
-# Check for environment variable
-if not os.getenv("DATABASE_URL"):
-    raise RuntimeError("DATABASE_URL is not set")
-
-# Configure session to use filesystem
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
-
-# Set up database
-engine = create_engine(os.getenv("DATABASE_URL"))
-db = scoped_session(sessionmaker(bind=engine))
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db.init_app(app)
 
 
 # Log in page
@@ -30,9 +20,9 @@ def index():
         attempted_username = request.form['username'].strip()
         attempted_password = request.form['password']
 
-        if db.execute("SELECT * FROM users WHERE username = :username AND password = :password",
-                      {"username": attempted_username, "password": attempted_password}).rowcount == 0:
-            error = "invalid username/password. Try again."
+        if users.query.fliter_by(and_(username=":username", password=":password",
+        {"username": attempted_username, "password": attempted_password}).all().rowcount == 0:
+            error="invalid username/password. Try again."
             return render_template("index.html", error=error)
         return redirect(url_for('homepage'))
 
@@ -42,11 +32,11 @@ def index():
 # Registration page
 @app.route("/registration/", methods=["GET", "POST"])
 def registration():
-    error = ''
+    error=''
     if request.method == 'POST':
-        username = request.form["username"]
-        password = request.form["password"]
-
+        username=request.form["username"]
+        password=request.form["password"]
+        users.query.filter_by()
         if db.execute("SELECT * FROM users WHERE username = :user", {
                 "user": username
         }).rowcount == 0:
@@ -56,11 +46,11 @@ def registration():
                     "pass": password
                 })
             db.commit()
-            error = "Succes! Please log in."
+            error="Succes! Please log in."
             return render_template("registration.html", error=error)
 
         else:
-            error = "Username already in use."
+            error="Username already in use."
             return render_template("registration.html", error=error)
 
     return render_template("registration.html")
@@ -69,14 +59,14 @@ def registration():
 # Home page
 @app.route("/homepage/")
 def homepage():
-    books = db.execute("SELECT * FROM books").fetchall()
+    books=db.execute("SELECT * FROM books").fetchall()
     return render_template("homepage.html", books=books)
 
 
 # Book page
 @app.route("/search/<string:book_isbn>")
 def book(book_isbn):
-    book = db.execute("SELECT * FROM books WHERE isbn = :isbn", {
+    book=db.execute("SELECT * FROM books WHERE isbn = :isbn", {
         "isbn": book_isbn
     }).fetchone()
     if book is None:
@@ -87,8 +77,8 @@ def book(book_isbn):
 # Seach result page
 @app.route("/search", methods=["POST"])
 def search():
-    name = request.form.get("name").title()
-    results = db.execute(
+    name=request.form.get("name").title()
+    results=db.execute(
         "select * from books where autor LIKE :name or title LIKE :name or isbn LIKE :name",
         {"name": "%" + name + "%"})
     if results.rowcount == 0:
