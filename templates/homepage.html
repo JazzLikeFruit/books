@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for book in books%}
+        {% for book in books.itmes%}
         <tr>
             <td>{{book.title}}</td>
             <td>{{book.autor}}</td>
@@ -24,7 +24,4 @@
         {% endfor %}
     </tbody>
 </table>
-
-
-
 {% endblock %}
