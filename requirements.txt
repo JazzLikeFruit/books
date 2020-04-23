@@ -4,3 +4,5 @@ psycopg2-binary
 SQLAlchemy
 requests
 werkzeug==0.16
+Flask-WTF
+flask-bootstrap

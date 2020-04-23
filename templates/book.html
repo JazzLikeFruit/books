@@ -1,12 +1,57 @@
 {% extends "default.html" %}
 {% block title %}Book information{% endblock %}
 {% block content %}
-<h1> Book information </h1>
+<h1> {{book.title}} </h1>
 
 <ul>
-    <li>Title: {{book.title}} </li>
     <li>Autor: {{book.autor}}</li>
     <li>Isbn: {{book.isbn}}</li>
     <li>Publication year: {{book.publication_year}}</li>
+    {% if reviews|length > 0 %}
+    <li>average rating: {{average_rating|join(',')}}</li>
+    {% endif %}
+    <li>Goodreads average rating: {{br_average}}</li>
+    <li>Goodreads review count: {{br_rating}}</li>
 </ul>
+<div class="row">
+    <div class="col-sm-7">
+        <h2>Reviews</h2>
+        <hr>
+        {% for review in reviews%}
+        <p>User: {{ review.username }}</p>
+        <p>Title: {{ review.review_title }}</p>
+        <p>Review: {{ review.text }}</p>
+        <p>Rating: {{ review.rating }}</p>
+
+        <hr>
+        {% endfor%}
+    </div>
+
+    {% if reviewed %}
+    <div class="col-sm-5">
+        <h3>Write a review</h3>
+        <form method="POST" action="{{ url_for('review', book_isbn=book.isbn) }}">
+            <div class="form-group">
+                <label for="textinput">Review title</label>
+                <input name="review-title" type="text" class="form-control" id="Textinput" placeholder="Title">
+            </div>
+            <div class="form-group">
+                <label for="textinput">Text</label>
+                <input name="text" type="text" class="form-control" id="Textinput" placeholder="Enter review">
+            </div>
+            <label for="rating">Rating: </label>
+            <select name="book-rating" id="rating" name="rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select><br>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
 {% endblock %}
