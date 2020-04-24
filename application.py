@@ -28,12 +28,16 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+# Pass the login information
+
 
 class loginForm(FlaskForm):
     username = StringField('username', validators=[
                            input_required(), length(min=4, max=15)])
     password = PasswordField('password', validators=[
                              input_required(), length(min=8, max=25)])
+
+# Pass the sign up information
 
 
 class RegisterForm(FlaskForm):
@@ -43,17 +47,19 @@ class RegisterForm(FlaskForm):
                              input_required(), length(min=8, max=25)])
 
 
-# Log in page
+# index page
 @app.route("/")
 def index():
 
     return render_template("index.html")
 
-
+# Log in page.
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     error = ''
     form = loginForm()
+
+    # Check the user input.
     if form.validate_on_submit():
         user = db.execute("SELECT * FROM users WHERE username = :username",
                           {"username": form.username.data}).fetchone()
@@ -63,6 +69,8 @@ def login():
                 return redirect(url_for('homepage'))
         error = "invalid username/password. Try again."
         return render_template("login.html", error=error, form=form)
+
+    # Check if already logged in
     if "user" in session:
         return redirect(url_for("homepage"))
     return render_template("login.html", form=form)
@@ -157,7 +165,7 @@ def book(book_isbn):
     else:
         return redirect(url_for("login"))
 
-
+# Review a book
 @app.route("/review/<string:book_isbn>", methods=["POST"])
 def review(book_isbn):
     if request.method == "POST":
@@ -166,20 +174,22 @@ def review(book_isbn):
         book_rating = request.form["book-rating"]
 
         db.execute("INSERT INTO reviews(username, isbn, text, rating, review_title) VALUES (:username, :isbn, :text, :rating, :review_title)",
-                   {"username": session["user"], "isbn": book_isbn, "text": text, "rating": book_rating, "review_title": review_title})
+                   {"username": session["user"], 
+                   "isbn": book_isbn, "text": text, 
+                   "rating": book_rating, 
+                   "review_title": review_title})
         db.commit()
         return redirect(url_for('book', book_isbn=book_isbn))
 
-
+# Logout function
 @app.route("/logout")
 def logout():
     session.pop("user", None)
     return redirect(url_for("login"))
 
-
+# Return details about a book.
 @app.route("/api/books/<string:book_isbn>")
 def books_api(book_isbn):
-    """Return details about a book."""
 
     # Make sure book exists.
     book = db.execute("SELECT * from books WHERE isbn= :isbn",
