@@ -38,12 +38,13 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('logout') }}">logout</a>
                     </li>
-                    {% endblock%}
+
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="{{ url_for('search') }}" method="post">
                     <input name="name" class="form-control mr-sm-2" placeholder="Search book" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
+                {% endblock%}
             </div>
         </div>
     </nav>

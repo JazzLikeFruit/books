@@ -13,6 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thiskeyissupposedtobesecret!'
+
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
@@ -96,8 +97,7 @@ def registration():
                 "pass": hashed_password
             })
         db.commit()
-        error = 'Username added'
-        return render_template("registration.html", form=form, error=error)
+        return redirect(url_for("login"))
 
     return render_template("registration.html", form=form)
 
@@ -174,10 +174,10 @@ def review(book_isbn):
         book_rating = request.form["book-rating"]
 
         db.execute("INSERT INTO reviews(username, isbn, text, rating, review_title) VALUES (:username, :isbn, :text, :rating, :review_title)",
-                   {"username": session["user"], 
-                   "isbn": book_isbn, "text": text, 
-                   "rating": book_rating, 
-                   "review_title": review_title})
+                   {"username": session["user"],
+                    "isbn": book_isbn, "text": text,
+                    "rating": book_rating,
+                    "review_title": review_title})
         db.commit()
         return redirect(url_for('book', book_isbn=book_isbn))
 
@@ -188,7 +188,7 @@ def logout():
     return redirect(url_for("login"))
 
 # Return details about a book.
-@app.route("/api/books/<string:book_isbn>")
+@app.route("/api/<string:book_isbn>")
 def books_api(book_isbn):
 
     # Make sure book exists.
@@ -204,7 +204,9 @@ def books_api(book_isbn):
         "isbn": book_isbn}).fetchone()
 
     if average_info[0] == None:
-        average_info[0] = "0"
+        average_info = 0
+    else:
+        average_info = averageinfo[0]
 
     return jsonify({
         "title": book['title'],
@@ -212,4 +214,4 @@ def books_api(book_isbn):
         "year": book['publication_year'],
         "isbn": book['isbn'],
         "review_count": int(review_info),
-        "average_score": float(average_info[0])})
+        "average_score": float(average_info)})
