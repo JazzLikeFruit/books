@@ -73,6 +73,12 @@ def registration():
     error = ''
     form = RegisterForm()
     if form.validate_on_submit():
+
+        if db.execute("SELECT * FROM users WHERE username =:username",
+                      {"username": form.username.data}).fetchone():
+            error = 'Username unavailable'
+            return render_template("registration.html", form=form, error=error)
+
         hashed_password = generate_password_hash(
             form.password.data, method='sha256')
 
@@ -187,13 +193,13 @@ def books_api(book_isbn):
     average_info = db.execute("SELECT AVG(round(rating)) FROM reviews WHERE isbn = :isbn", {
         "isbn": book_isbn}).fetchone()
 
-    average_info = average_info[0]
-    if average_info == None:
-        average_info = "0"
+    if average_info[0] == None:
+        average_info[0] = "0"
+
     return jsonify({
         "title": book['title'],
         "author": book['autor'],
         "year": book['publication_year'],
         "isbn": book['isbn'],
         "review_count": int(review_info),
-        "average_score": int(average_info)})
+        "average_score": float(average_info[0])})

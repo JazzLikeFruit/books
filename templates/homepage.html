@@ -2,18 +2,18 @@
 {% block title %}homepage{% endblock %}
 
 {% block content %}
-<table class="table table-sm">
-    <thead>
+<table class="table">
+    <thead class="thead-dark">
         <tr>
-            <th>Title</th>
-            <th>Autor</th>
-            <th>Isbn</th>
-            <th>Publication year</th>
-            <th>More information</th>
+            <th scope="col">Title</th>
+            <th scope="col">Autor</th>
+            <th scope="col">Isbn</th>
+            <th scope="col">Publication year</th>
+            <th scope="col">More information</th>
         </tr>
     </thead>
     <tbody>
-        {% for book in books.itmes%}
+        {% for book in books%}
         <tr>
             <td>{{book.title}}</td>
             <td>{{book.autor}}</td>

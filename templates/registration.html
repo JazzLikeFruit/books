@@ -22,17 +22,17 @@
 <body>
     <div class="container login-container">
         <div class="row">
-            <div class="col-md-12 login-form-1">
-
-                <h3>{{ message }}</h3>
-                <h3>Registration</h3>
+            <div class="col-sm-12 login-form-1">
+                <h3> <img src="https://i.pinimg.com/originals/2c/fc/93/2cfc93d7665f5d7728782700e50596e3.png" width="55"
+                        height="55" alt=""></h3><br>
+                <h3>Sign up</h3>
                 <form method="POST" action="{{ url_for('registration') }}">
                     {{ form.hidden_tag() }}
                     {{wtf.form_field(form.username)}}
                     {{wtf.form_field(form.password)}}
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
                     <div class="form-group">
-                        <a href="{{ url_for('index') }}" class="login">Already have an account? log in here.</a>
+                        <a href="{{ url_for('login') }}" class="login">Already have an account? log in here.</a>
                     </div>
                 </form>
                 <p>{{error}}</p>

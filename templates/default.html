@@ -27,16 +27,18 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand text-center" href="#">
                 <img src="https://i.pinimg.com/originals/2c/fc/93/2cfc93d7665f5d7728782700e50596e3.png" width="45"
                     height="45" alt="">
             </a>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
                 <a class="navbar-brand" href="{{ url_for('homepage') }}">Book Club</a>
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    {% block nav%}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('logout') }}">logout</a>
                     </li>
+                    {% endblock%}
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="{{ url_for('search') }}" method="post">
                     <input name="name" class="form-control mr-sm-2" placeholder="Search book" aria-label="Search">
