@@ -1,27 +1,25 @@
-{% extends "default.html" %}
-{% block title %}homepage{% endblock %}
-
-{% block content %}
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Autor</th>
-            <th scope="col">Isbn</th>
-            <th scope="col">Publication year</th>
-            <th scope="col">More information</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for book in books%}
-        <tr>
-            <td>{{book.title}}</td>
-            <td>{{book.autor}}</td>
-            <td>{{book.isbn}}</td>
-            <td>{{book.publication_year}}</td>
-            <td><a href="{{ url_for('book', book_isbn=book.isbn) }}">link</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
+{% extends "default.html" %} {% block title %}homepage{% endblock %} {% block
+content %}
+<table class="table container" style="margin-top: 1cm;">
+	<thead class="thead-light" style="width: 100%;">
+		<tr>
+			<th scope="col">Title</th>
+			<th scope="col">Autor</th>
+			<th scope="col">Isbn</th>
+			<th scope="col">Publication year</th>
+			<th scope="col">More information</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for book in books%}
+		<tr>
+			<td>{{book.title}}</td>
+			<td>{{book.autor}}</td>
+			<td>{{book.isbn}}</td>
+			<td>{{book.publication_year}}</td>
+			<td><a href="{{ url_for('book', book_isbn=book.isbn) }}">link</a></td>
+		</tr>
+		{% endfor %}
+	</tbody>
 </table>
 {% endblock %}

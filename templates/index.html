@@ -1,15 +1,11 @@
-{% extends "default.html" %}
-
-{% block nav%}
+{% extends "default.html" %} {% block nav%}
 
 <li class="nav-item">
-    <a class="nav-link" href="{{ url_for('login') }}">log in</a>
+	<a class="nav-link" href="{{ url_for('login') }}">log in</a>
 </li>
-{% endblock %}
+{% endblock %} {% block content%}
+<br />
+<h2>Welcome to Book club</h2>
 
-{% block content%}
-<br>
-<h2> Welcome to Book club </h2>
-
-<p> Please log in to make use of the website.</p>
+<p>Please log in to make use of the website.</p>
 {% endblock %}
