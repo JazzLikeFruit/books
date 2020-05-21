@@ -8,7 +8,7 @@ This project is an implementation of the module 1 assigmnent for web application
 
 ## Getting Started
 
-To get this project up and running install the extentions specified in the requirements.tct file.
+To get this project up and running install the extentions specified in the requirements.txt file.
 
 ## Files
 
