@@ -251,3 +251,7 @@ def books_api(book_isbn):
         "isbn": book['isbn'],
         "review_count": int(review_info),
         "average_score": float(average_info)})
+
+
+if __name__ == '__main__':
+    app.run()
