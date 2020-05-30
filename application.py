@@ -16,7 +16,6 @@ from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
@@ -254,3 +253,5 @@ def books_api(book_isbn):
         "average_score": float(average_info)})
 
 
+if __name__ == '__main__':
+    app.run()
