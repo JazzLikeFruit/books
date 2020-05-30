@@ -15,6 +15,9 @@ from wtforms.validators import input_required, length
 from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash, check_password_hash
 
+PORT = process.env.PORT | | '8080'
+
+app.set = ("port", PORT)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
